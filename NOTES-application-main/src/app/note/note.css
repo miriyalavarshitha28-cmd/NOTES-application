@@ -1,0 +1,237 @@
+.note-card {
+
+  width: 390px;
+
+  min-height: 290px;
+
+  padding: 28px;
+
+  border-radius: 28px;
+
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #fdf4ff
+  );
+
+  border-left: 10px solid #facc15;
+
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+
+  transition: 0.3s;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  gap: 18px;
+}
+
+/* CARD HOVER */
+
+.note-card:hover {
+
+  transform: translateY(-6px);
+}
+
+/* DARK MODE CARD */
+
+.dark .note-card {
+
+  background: linear-gradient(
+    135deg,
+    #1e293b,
+    #312e81
+  );
+
+  color: white;
+
+  border-left: 10px solid #f472b6;
+}
+
+/* NOTE TEXT */
+
+.note-card h3 {
+
+  margin: 0;
+
+  font-size: 32px;
+
+  line-height: 1.5;
+
+  color: #172554;
+
+  word-break: break-word;
+}
+
+.dark .note-card h3 {
+  color: white;
+}
+
+/* DATE */
+
+.note-card small {
+
+  font-size: 14px;
+
+  opacity: 0.85;
+
+  color: #475569;
+}
+
+/* DARK MODE DATE */
+
+.dark .note-card small {
+
+  color: #e2e8f0;
+}
+
+/* ACTION BUTTONS */
+
+.actions {
+
+  display: flex;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+}
+
+/* BUTTONS INSIDE CARD */
+
+.actions button {
+
+  flex: 1;
+
+  min-width: 100px;
+
+  padding: 12px 18px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+  color: white;
+}
+
+/* EDIT BUTTON */
+
+.actions button:nth-child(1) {
+
+  background: linear-gradient(
+    135deg,
+    #3b82f6,
+    #6366f1
+  );
+}
+
+/* DELETE BUTTON */
+
+.actions button:nth-child(2) {
+
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #f97316
+  );
+}
+
+/* PIN BUTTON */
+
+.actions button:nth-child(3) {
+
+  background: linear-gradient(
+    135deg,
+    #10b981,
+    #14b8a6
+  );
+}
+
+/* HOVER EFFECT */
+
+.actions button:hover {
+
+  transform: translateY(-3px) scale(1.04);
+
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+/* EDIT INPUT */
+
+.note-card input {
+
+  width: 100%;
+
+  padding: 18px;
+
+  font-size: 18px;
+
+  border-radius: 16px;
+
+  box-sizing: border-box;
+}
+.edit-section {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  width: 100%;
+}
+
+.edit-section button {
+
+  width: 100%;
+
+  align-self: center;
+}
+
+/* SAVE BUTTON */
+
+.edit-section button {
+
+  background: linear-gradient(
+    135deg,
+    #8b5cf6,
+    #ec4899
+  );
+
+  color: white;
+
+  font-weight: bold;
+
+  border: none;
+
+  border-radius: 14px;
+
+  padding: 14px;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* SAVE BUTTON HOVER */
+
+.edit-section button:hover {
+
+  transform: translateY(-3px) scale(1.03);
+
+  box-shadow: 0 10px 22px rgba(0,0,0,0.2);
+}

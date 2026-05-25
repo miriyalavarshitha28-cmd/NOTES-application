@@ -1,0 +1,47 @@
+<div class="login-container">
+
+  <div class="login-box">
+
+    <h1>Notes Login</h1>
+
+    <input
+      type="email"
+      [(ngModel)]="username"
+      placeholder="Enter Email"
+    />
+
+    <input
+      type="password"
+      [(ngModel)]="password"
+      placeholder="Enter Password"
+    />
+
+    <button (click)="login()">
+      Login
+    </button>
+
+    <button
+      class="google-btn"
+      (click)="googleLogin()"
+      [disabled]="isGoogleSigningIn"
+    >
+      {{ isGoogleSigningIn ? 'Signing in...' : 'Signin with Google' }}
+    </button>
+
+    <p class="error">
+      {{ errorMessage }}
+    </p>
+
+    <p class="signup-link">
+
+      Don't have an account?
+
+      <span (click)="goToSignup()">
+        Sign Up
+      </span>
+
+    </p>
+
+  </div>
+
+</div>

@@ -1,0 +1,80 @@
+.page-card {
+  width: 100%;
+  max-width: 900px;
+  border-radius: 28px;
+  padding: 32px;
+  background: radial-gradient(circle at top right, #dbeafe 0%, #f3e8ff 35%, #fee2e2 100%);
+  border: 1px solid rgba(139, 92, 246, 0.24);
+  box-shadow: 0 30px 80px rgba(99, 102, 241, 0.18);
+}
+
+.page-header {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 220px;
+}
+
+.header-title {
+  flex: 1;
+}
+
+.page-header h1 {
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  color: #c2410c;
+  text-shadow: 0 8px 24px rgba(251, 146, 60, 0.18);
+}
+
+.page-card .detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.detail-item {
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.detail-item span {
+  display: block;
+  margin-bottom: 10px;
+  color: #c2410c;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+}
+
+.detail-item strong {
+  font-size: 1.08rem;
+  color: #7c2d12;
+}
+
+.page-header button {
+  min-width: 160px;
+  background: linear-gradient(135deg, #fb923c, #facc15);
+}
+
+.page-header button:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+  .page-header {
+    justify-content: center;
+    text-align: center;
+  }
+}

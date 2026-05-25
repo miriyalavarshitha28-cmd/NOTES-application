@@ -1,0 +1,53 @@
+<div class="note-card">
+
+  @if(!isEditing) {
+
+    <h3>{{ note.text }}</h3>
+
+    <small>{{ note.date }}</small>
+
+    <div class="actions">
+
+      <button (click)="startEdit()">
+        Edit
+      </button>
+
+      <button (click)="deleteNote()">
+        Delete
+      </button>
+
+      <button (click)="togglePin()">
+
+        @if(note.pinned) {
+          Unpin
+        }
+
+        @else {
+          Pin
+        }
+
+      </button>
+
+    </div>
+
+  }
+
+  @else {
+
+    <div class="edit-section">
+
+      <input
+        type="text"
+        [(ngModel)]="editedText"
+        placeholder="Edit your note..."
+      />
+
+      <button (click)="saveEdit()">
+        Save
+    </button>
+
+  </div>
+
+}
+
+</div>

@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="page-header">
+    <div class="header-title">
+      <h1>Profile</h1>
+    </div>
+    <div class="header-actions">
+      <button routerLink="/notes">Back to Notes</button>
+    </div>
+  </div>
+
+  <section class="page-card">
+    <div class="detail-grid">
+      <div class="detail-item">
+        <span>Full Name</span>
+        <strong>{{ profile.fullName }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Email</span>
+        <strong>{{ profile.email }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Username</span>
+        <strong>{{ profile.username }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Plan</span>
+        <strong>{{ profile.plan }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Joined</span>
+        <strong>{{ profile.joined }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Favorite Color</span>
+        <strong>{{ profile.favoriteColor }}</strong>
+      </div>
+    </div>
+  </section>
+</div>

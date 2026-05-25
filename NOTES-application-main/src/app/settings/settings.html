@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="page-header">
+    <div class="header-title">
+      <h1>Settings</h1>
+    </div>
+    <div class="header-actions">
+      <button routerLink="/notes">Back to Notes</button>
+    </div>
+  </div>
+
+  <section class="page-card">
+    <div class="detail-grid">
+      <div class="detail-item">
+        <span>Language</span>
+        <strong>{{ settings.language }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Notifications</span>
+        <strong>{{ settings.notifications ? 'Enabled' : 'Disabled' }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Theme</span>
+        <strong>{{ settings.darkMode }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Autosave</span>
+        <strong>{{ settings.autosave }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Privacy</span>
+        <strong>{{ settings.privacy }}</strong>
+      </div>
+      <div class="detail-item">
+        <span>Reminder Emails</span>
+        <strong>{{ settings.reminderEmails ? 'On' : 'Off' }}</strong>
+      </div>
+    </div>
+  </section>
+</div>
