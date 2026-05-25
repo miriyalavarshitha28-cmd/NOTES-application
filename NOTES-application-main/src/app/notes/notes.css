@@ -320,3 +320,15 @@ input:focus {
   margin: 0;
   color: #475569;
 }
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  justify-content: center;
+}
+
+.speak-btn {
+  height: fit-content;
+  white-space: nowrap;
+}

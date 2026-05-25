@@ -338,6 +338,39 @@ export class NotesComponent implements OnInit {
       this.resolveCurrentUserId();
     }
   }
+  startVoiceInput() {
+
+  const SpeechRecognition =
+    (window as any).SpeechRecognition ||
+    (window as any).webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert('Speech Recognition not supported');
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = 'en-US';
+
+  recognition.continuous = false;
+
+  recognition.interimResults = false;
+
+  recognition.start();
+
+  recognition.onresult = (event: any) => {
+
+    const transcript =
+      event.results[0][0].transcript;
+
+    this.newNote = transcript;
+  };
+
+  recognition.onerror = (event: any) => {
+    console.error(event);
+  };
+}
 
   searchNotes() {
     this.noteMessage = '';
