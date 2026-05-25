@@ -340,8 +340,9 @@ export class NotesComponent implements OnInit {
   }
   startVoiceInput() {
 
+  console.log('Voice started');
+
   const SpeechRecognition =
-    (window as any).SpeechRecognition ||
     (window as any).webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
@@ -353,16 +354,14 @@ export class NotesComponent implements OnInit {
 
   recognition.lang = 'en-US';
 
-  recognition.continuous = false;
-
-  recognition.interimResults = false;
-
   recognition.start();
 
   recognition.onresult = (event: any) => {
 
     const transcript =
       event.results[0][0].transcript;
+
+    console.log(transcript);
 
     this.newNote = transcript;
   };

@@ -2,98 +2,120 @@
 
   <div class="container">
 
-    <div class="top-actions">
-      <div class="left-actions">
-        <button
-          class="theme-btn"
-          (click)="toggleTheme()"
-        >
+<div class="top-actions">
 
-          @if(darkMode()) {
-            Dark Mode
-          }
-
-          @else {
-            Light Mode
-          }
-
-        </button>
-      </div>
-
-      <div class="title-section">
-        <h1>Notes App</h1>
-        <button class="speak-btn" (click)="startVoiceInput()">
-          🎤 Speak
-        </button>
-      </div>
-
-      <div class="right-actions">
-        <button type="button" routerLink="/profile">
-          Profile
-        </button>
-        <button type="button" routerLink="/settings">
-          Settings
-        </button>
-        <button type="button" class="logout-btn" (click)="logout()">
-          Logout
-        </button>
-      </div>
-    </div>
-
-    <div class="add-section">
-
-      <input
-        type="text"
-        [(ngModel)]="newNote"
-        placeholder="Write a note..."
-      />
-
-      <button (click)="addNote()">
-        Add Note
-      </button>
-
-    </div>
-
-    <div class="search-section">
-
-      <input
-        type="text"
-        [(ngModel)]="searchText"
-        placeholder="Search notes..."
-      />
-      <button class="search-btn" type="button" (click)="searchNotes()">
-        Search
-      </button>
-
-    </div>
-
-    <div class="message-row" *ngIf="noteMessage">
-      <p>{{ noteMessage }}</p>
-    </div>
-
-    <div class="notes-container">
-
-      @for(
-        note of filteredNotes();
-        track note.id
-      ) {
-
-        <app-note
-
-          [note]="note"
-
-          (deleteEvent)="deleteNote($event)"
-
-          (editEvent)="editNote($event)"
-
-          (pinEvent)="togglePin($event)"
-
-        >
-        </app-note>
-
+  <div class="left-actions">
+    <button
+      class="theme-btn"
+      (click)="toggleTheme()"
+    >
+      @if(darkMode()) {
+        Dark Mode
       }
+      @else {
+        Light Mode
+      }
+    </button>
+  </div>
 
-    </div>
+  <div class="title-section">
+    <h1>Notes App</h1>
+  </div>
+
+  <div class="right-actions">
+    <button type="button" routerLink="/profile">
+      Profile
+    </button>
+
+    <button type="button" routerLink="/settings">
+      Settings
+    </button>
+
+    <button
+      type="button"
+      class="logout-btn"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+  </div>
+
+</div>
+
+<div class="add-section">
+
+  <div class="note-input-wrapper">
+
+    <input
+      type="text"
+      [(ngModel)]="newNote"
+      placeholder="Write a note..."
+    />
+
+    <button
+      class="mic-btn"
+      type="button"
+      (click)="startVoiceInput()"
+    >
+      🎤
+    </button>
+
+  </div>
+
+  <button (click)="addNote()">
+    Add Note
+  </button>
+
+</div>
+
+<div class="search-section">
+
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    placeholder="Search notes..."
+  />
+
+  <button
+    class="search-btn"
+    type="button"
+    (click)="searchNotes()"
+  >
+    Search
+  </button>
+
+</div>
+
+<div
+  class="message-row"
+  *ngIf="noteMessage"
+>
+  <p>{{ noteMessage }}</p>
+</div>
+
+<h2 class="notes-heading">
+  My Notes
+</h2>
+
+<div class="notes-container">
+
+  @for(
+    note of filteredNotes();
+    track note.id
+  ) {
+
+    <app-note
+      [note]="note"
+      (deleteEvent)="deleteNote($event)"
+      (editEvent)="editNote($event)"
+      (pinEvent)="togglePin($event)"
+    >
+    </app-note>
+
+  }
+
+</div>
+```
 
   </div>
 
