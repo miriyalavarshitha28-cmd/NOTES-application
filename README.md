@@ -232,7 +232,7 @@ Create a .env file inside the backend folder.
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
-DB_PASSWORD=your_password
+DB_PASSWORD=Kavya@2004
 DB_NAME=notesapp
 ```
 
