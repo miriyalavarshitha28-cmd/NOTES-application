@@ -301,24 +301,29 @@ export class NotesComponent implements OnInit {
   }
 
   togglePin(updatedNote: Note) {
-    if (!updatedNote.id) {
-      return;
-    }
-
-    const toggledNote = { ...updatedNote, pinned: !updatedNote.pinned };
-
-    this.backendService
-      .updateNote(toggledNote.id, { pinned: toggledNote.pinned })
-      .subscribe({
-        next: () => {
-          this.notes.update(notes =>
-            notes.map(note =>
-              note.id === toggledNote.id ? toggledNote : note
-            )
-          );
-        }
-      });
+  if (!updatedNote.id) {
+    return;
   }
+
+  this.backendService
+    .updateNote(updatedNote.id, {
+      pinned: updatedNote.pinned
+    })
+    .subscribe({
+      next: () => {
+        this.notes.update(notes =>
+          notes.map(note =>
+            note.id === updatedNote.id
+              ? updatedNote
+              : note
+          )
+        );
+      },
+      error: err => {
+        console.error('Pin update failed', err);
+      }
+    });
+}
 
   ngOnInit() {
     if (typeof window === 'undefined') {
