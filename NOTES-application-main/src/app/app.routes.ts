@@ -4,7 +4,6 @@ import { LoginComponent } from './login/login';
 
 import { SignupComponent } from './signup/signup';
 
-import { NotesComponent } from './notes/notes';
 
 export const routes: Routes = [
 
@@ -18,10 +17,12 @@ export const routes: Routes = [
     component: SignupComponent
   },
 
-  {
-    path: 'notes',
-    component: NotesComponent
-  },
+ {
+  path: 'notes',
+  loadComponent: () =>
+    import('./notes/notes')
+      .then(m => m.NotesComponent)
+ },
 
   {
     path: 'profile',
