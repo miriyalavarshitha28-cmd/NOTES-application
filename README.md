@@ -46,7 +46,7 @@ A full-stack Notes Management Application built using Angular, NestJS, PostgreSQ
 
 ### Frontend
 
-* Angular 20
+* Angular 21
 * TypeScript
 * Angular Signals
 * Angular Router
