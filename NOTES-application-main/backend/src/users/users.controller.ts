@@ -16,12 +16,20 @@ export class UsersController {
     @Body() body: { email: string; password: string }
   ) {
     const user = await this.usersService.findByEmail(body.email);
+
     if (!user || user.password !== body.password) {
-      return { success: false, message: 'Invalid credentials' };
+      return {
+        success: false,
+        message: 'Invalid credentials'
+      };
     }
 
     const { password, ...result } = user;
-    return { success: true, user: result };
+
+    return {
+      success: true,
+      user: result
+    };
   }
 
   @Get()
@@ -29,13 +37,14 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
-  }
-
+  // MOVE THIS ABOVE :id
   @Get('email/:email')
   findByEmail(@Param('email') email: string) {
     return this.usersService.findByEmail(email);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(id);
   }
 }

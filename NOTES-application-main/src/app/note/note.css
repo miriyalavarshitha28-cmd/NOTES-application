@@ -4,6 +4,8 @@
 
   min-height: 290px;
 
+  height: auto;
+
   padding: 28px;
 
   border-radius: 28px;
@@ -23,8 +25,6 @@
   display: flex;
 
   flex-direction: column;
-
-  justify-content: space-between;
 
   gap: 18px;
 }
@@ -51,15 +51,15 @@
   border-left: 10px solid #f472b6;
 }
 
-/* NOTE TEXT */
+/* TITLE */
 
 .note-card h3 {
 
   margin: 0;
 
-  font-size: 32px;
+  font-size: 28px;
 
-  line-height: 1.5;
+  line-height: 1.4;
 
   color: #172554;
 
@@ -67,7 +67,34 @@
 }
 
 .dark .note-card h3 {
+
   color: white;
+}
+
+/* BODY TEXT */
+
+.note-card p {
+
+  margin: 10px 0;
+
+  font-size: 18px;
+
+  line-height: 1.7;
+
+  color: #334155;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+
+  overflow-wrap: break-word;
+
+  display: block;
+}
+
+.dark .note-card p {
+
+  color: #e2e8f0;
 }
 
 /* DATE */
@@ -76,19 +103,17 @@
 
   font-size: 14px;
 
-  opacity: 0.85;
+  opacity: 0.9;
 
   color: #475569;
 }
-
-/* DARK MODE DATE */
 
 .dark .note-card small {
 
   color: #e2e8f0;
 }
 
-/* ACTION BUTTONS */
+/* ACTIONS */
 
 .actions {
 
@@ -97,9 +122,11 @@
   gap: 12px;
 
   flex-wrap: wrap;
+
+  margin-top: 10px;
 }
 
-/* BUTTONS INSIDE CARD */
+/* BUTTONS */
 
 .actions button {
 
@@ -124,7 +151,7 @@
   color: white;
 }
 
-/* EDIT BUTTON */
+/* EDIT */
 
 .actions button:nth-child(1) {
 
@@ -135,7 +162,7 @@
   );
 }
 
-/* DELETE BUTTON */
+/* DELETE */
 
 .actions button:nth-child(2) {
 
@@ -146,7 +173,7 @@
   );
 }
 
-/* PIN BUTTON */
+/* PIN */
 
 .actions button:nth-child(3) {
 
@@ -157,29 +184,17 @@
   );
 }
 
-/* HOVER EFFECT */
+/* HOVER */
 
 .actions button:hover {
 
-  transform: translateY(-3px) scale(1.04);
+  transform: translateY(-3px);
 
   box-shadow: 0 8px 18px rgba(0,0,0,0.18);
 }
 
-/* EDIT INPUT */
+/* EDIT SECTION */
 
-.note-card input {
-
-  width: 100%;
-
-  padding: 18px;
-
-  font-size: 18px;
-
-  border-radius: 16px;
-
-  box-sizing: border-box;
-}
 .edit-section {
 
   display: flex;
@@ -191,11 +206,27 @@
   width: 100%;
 }
 
-.edit-section button {
+.note-card input,
+.note-card textarea {
 
   width: 100%;
 
-  align-self: center;
+  padding: 16px;
+
+  font-size: 16px;
+
+  border-radius: 16px;
+
+  border: 1px solid #cbd5e1;
+
+  box-sizing: border-box;
+}
+
+.note-card textarea {
+
+  min-height: 120px;
+
+  resize: vertical;
 }
 
 /* SAVE BUTTON */
@@ -223,15 +254,11 @@
   cursor: pointer;
 
   transition: 0.3s;
-
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
-
-/* SAVE BUTTON HOVER */
 
 .edit-section button:hover {
 
-  transform: translateY(-3px) scale(1.03);
+  transform: translateY(-3px);
 
   box-shadow: 0 10px 22px rgba(0,0,0,0.2);
 }

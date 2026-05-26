@@ -1,0 +1,63 @@
+<div class="container">
+
+  <h1>All Notes</h1>
+
+  <div class="search-section">
+    <input
+  type="text"
+  [ngModel]="searchText()"
+  (ngModelChange)="searchText.set($event)"
+  placeholder="Search notes..."
+/>
+  </div>
+
+  <div class="notes-container">
+
+    @for (
+      note of filteredNotes();
+      track note.id
+    ) {
+
+      <div class="note-card">
+
+        <h3>{{ note.title }}</h3>
+
+        <p>{{ note.body }}</p>
+
+        <small>{{ note.date }}</small>
+
+        <div class="actions">
+
+          <button
+            type="button"
+            (click)="editNote(note)">
+            Edit
+          </button>
+
+          <button
+            type="button"
+            (click)="deleteNote(note.id)">
+            Delete
+          </button>
+
+          <button
+            type="button"
+            (click)="pinNote(note)">
+            Pin
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+  <button
+    type="button"
+    routerLink="/notes">
+    Back to Notes
+  </button>
+
+</div>

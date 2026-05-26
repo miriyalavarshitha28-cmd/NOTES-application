@@ -37,17 +37,28 @@ export class BackendService {
     return this.http.get<User[]>(`${this.apiUrl}/users`);
   }
 
-  createNote(note: { userId: string; text: string; date: string; pinned: boolean }) {
-    return this.http.post(`${this.apiUrl}/notes`, note);
-  }
+  createNote(note: {
+  userId: string;
+  title: string;
+  body: string;
+  date: string;
+  pinned: boolean;
+}) {
+  return this.http.post(`${this.apiUrl}/notes`, note);
+}
 
   getNotes(userId: string) {
     return this.http.get<any[]>(`${this.apiUrl}/notes?userId=${userId}`);
   }
 
-  updateNote(id: string, dto: { text?: string; date?: string; pinned?: boolean }) {
-    return this.http.put(`${this.apiUrl}/notes/${id}`, dto);
-  }
+ updateNote(id: string, dto: {
+  title?: string;
+  body?: string;
+  date?: string;
+  pinned?: boolean;
+}) {
+  return this.http.put(`${this.apiUrl}/notes/${id}`, dto);
+}
 
   deleteNote(id: string) {
     return this.http.delete(`${this.apiUrl}/notes/${id}`);

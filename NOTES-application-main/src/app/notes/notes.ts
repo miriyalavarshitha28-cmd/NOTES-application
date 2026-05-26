@@ -1,4 +1,4 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -8,13 +8,10 @@ import { AuthService } from '../services/auth';
 import { BackendService } from '../services/backend.service';
 
 interface Note {
-
   id: string;
-
-  text: string;
-
+  title: string;
+  body: string;
   date: string;
-
   pinned: boolean;
 }
 
@@ -50,7 +47,11 @@ export class NotesComponent implements OnInit {
 
   noteMessage = '';
 
-  newNote = '';
+  newTitle = '';
+  
+  newBody = '';
+
+  showAllNotes = false;
 
   searchText = '';
 
@@ -130,34 +131,47 @@ export class NotesComponent implements OnInit {
   }
 
   private createBackendUser(createNoteCallback?: () => void) {
-    if (!this.currentUserEmail) {
-      this.noteMessage = 'No user information found. Please login again.';
-      return;
-    }
 
-    this.noteMessage = 'Creating your profile so notes can be saved...';
-    const name = this.currentUserName || this.currentUserEmail.split('@')[0];
+  if (!this.currentUserEmail) {
+    this.noteMessage = 'No user information found. Please login again.';
+    return;
+  }
 
-    this.backendService
-      .createUser({
-        name,
-        email: this.currentUserEmail,
-        password: ''
-      })
-      .subscribe({
-        next: user => {
-          this.currentUserId = (user as any).id;
-          this.currentUserName = this.currentUserName || String((user as any).name || '');
-          this.persistCurrentUser();
-          this.loadNotes();
-          if (createNoteCallback) {
-            createNoteCallback();
-          }
-        },
-        error: err => {
-          console.error('Create backend user failed', err);
-          this.noteMessage = 'Unable to create your profile. Please login again.';
+  this.noteMessage = 'Creating your profile so notes can be saved...';
+
+  const name =
+    this.currentUserName ||
+    this.currentUserEmail.split('@')[0];
+
+  this.backendService
+    .createUser({
+      name,
+      email: this.currentUserEmail,
+      password: ''
+    })
+    .subscribe({
+      next: user => {
+
+        this.currentUserId = (user as any).id;
+
+        this.currentUserName =
+          this.currentUserName ||
+          String((user as any).name || '');
+
+        this.persistCurrentUser();
+
+        this.loadNotes();
+
+        if (createNoteCallback) {
+          createNoteCallback();
         }
+      },
+      error: err => {
+        console.error(err);
+
+        this.noteMessage =
+          'Unable to create your profile. Please login again.';
+      }
       });
   }
 
@@ -166,7 +180,8 @@ export class NotesComponent implements OnInit {
       return;
     }
 
-    this.noteMessage = '';
+    this.newTitle = '';
+    this.newBody = '';
 
     this.backendService.getNotes(this.currentUserId).subscribe({
       next: notes => {
@@ -179,16 +194,17 @@ export class NotesComponent implements OnInit {
   }
 
   private mapNote(note: any): Note {
-    return {
-      id: String(note?.id),
-      text: String(note?.text ?? ''),
-      date: String(note?.date ?? new Date().toLocaleString()),
-      pinned: Boolean(note?.pinned ?? false)
-    };
-  }
+  return {
+    id: String(note?.id),
+    title: String(note?.title ?? ''),
+    body: String(note?.body ?? ''),
+    date: String(note?.date ?? new Date().toLocaleString()),
+    pinned: Boolean(note?.pinned ?? false)
+  };
+}
 
   addNote() {
-    if (!this.newNote.trim()) {
+    if (!this.newTitle.trim() || !this.newBody.trim()) {
       return;
     }
 
@@ -198,14 +214,16 @@ export class NotesComponent implements OnInit {
       this.backendService
         .createNote({
           userId,
-          title: this.newNote,
+          title: this.newTitle,
+          body: this.newBody,
           date: new Date().toLocaleString(),
           pinned: false
         })
         .subscribe({
           next: note => {
             this.notes.update(notes => [...notes, this.mapNote(note)]);
-            this.newNote = '';
+            this.newTitle = '';
+            this.newBody = '';
             this.noteMessage = '';
           },
           error: err => {
@@ -269,44 +287,16 @@ export class NotesComponent implements OnInit {
   }
 
   editNote(updatedNote: Note) {
-    if (!updatedNote.id) {
-      return;
-    }
 
-    this.backendService
-      .updateNote(updatedNote.id, {
-        text: updatedNote.text,
-        date: updatedNote.date,
-        pinned: updatedNote.pinned
-      })
-      .subscribe({
-        next: () => {
-          this.notes.update(notes =>
-            notes.map(note =>
-              note.id === updatedNote.id ? updatedNote : note
-            )
-          );
-        }
-      });
-  }
-
-  filteredNotes() {
-    return [...this.notes()]
-      .filter(note =>
-        String(note.text || '')
-          .toLowerCase()
-          .includes(this.searchText.toLowerCase())
-      )
-      .sort((a, b) => Number(b.pinned) - Number(a.pinned));
-  }
-
-  togglePin(updatedNote: Note) {
   if (!updatedNote.id) {
     return;
   }
 
   this.backendService
     .updateNote(updatedNote.id, {
+      title: updatedNote.title,
+      body: updatedNote.body,
+      date: updatedNote.date,
       pinned: updatedNote.pinned
     })
     .subscribe({
@@ -320,9 +310,54 @@ export class NotesComponent implements OnInit {
         );
       },
       error: err => {
-        console.error('Pin update failed', err);
+        console.error('Edit note failed', err);
       }
     });
+}
+
+  filteredNotes() {
+  return [...this.notes()]
+    .filter(note =>
+      note.title
+        .toLowerCase()
+        .includes(this.searchText.toLowerCase()) ||
+
+      note.body
+        .toLowerCase()
+        .includes(this.searchText.toLowerCase())
+    )
+    .sort((a, b) => Number(b.pinned) - Number(a.pinned));
+}
+
+togglePin(updatedNote: any) {
+
+  this.backendService
+    .updateNote(updatedNote.id, {
+      pinned: updatedNote.pinned
+    })
+    .subscribe({
+
+      next: () => {
+
+        this.notes.update(notes =>
+          notes.map(note =>
+            note.id === updatedNote.id
+              ? {
+                  ...note,
+                  pinned: updatedNote.pinned
+                }
+              : note
+          )
+        );
+
+      },
+
+      error: err => {
+        console.error(err);
+      }
+
+    });
+
 }
 
   ngOnInit() {
@@ -338,9 +373,7 @@ export class NotesComponent implements OnInit {
       this.resolveCurrentUserId();
     }
   }
-  startVoiceInput() {
-
-  console.log('Voice started');
+  startVoiceInput(field: 'title' | 'body') {
 
   const SpeechRecognition =
     (window as any).webkitSpeechRecognition;
@@ -361,15 +394,18 @@ export class NotesComponent implements OnInit {
     const transcript =
       event.results[0][0].transcript;
 
-    console.log(transcript);
-
-    this.newNote = transcript;
+    if (field === 'title') {
+      this.newTitle = transcript;
+    } else {
+      this.newBody = transcript;
+    }
   };
 
   recognition.onerror = (event: any) => {
     console.error(event);
   };
 }
+
 
   searchNotes() {
     this.noteMessage = '';
@@ -387,5 +423,14 @@ export class NotesComponent implements OnInit {
 
     this.router.navigate(['/']);
   }
+  pinnedNotes = computed(() => {
+
+  return this.notes().filter(note => note.pinned);
+
+});
+
+ allNotes() {
+  return this.filteredNotes().filter(note => !note.pinned);
+}
 
 }

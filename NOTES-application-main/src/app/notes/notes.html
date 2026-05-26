@@ -2,120 +2,163 @@
 
   <div class="container">
 
-<div class="top-actions">
+    <!-- HEADER -->
 
-  <div class="left-actions">
-    <button
-      class="theme-btn"
-      (click)="toggleTheme()"
-    >
-      @if(darkMode()) {
-        Dark Mode
+    <div class="top-actions">
+
+      <div class="left-actions">
+
+        <button
+          class="theme-btn"
+          (click)="toggleTheme()">
+
+          @if (darkMode()) {
+            Dark Mode
+          } @else {
+            Light Mode
+          }
+
+        </button>
+
+      </div>
+
+      <div class="title-section">
+
+        <h1>Notes App</h1>
+
+      </div>
+
+      <div class="right-actions">
+
+        <button
+          type="button"
+          routerLink="/notes">
+          Home
+        </button>
+
+        <button
+          type="button"
+          routerLink="/all-notes">
+          All Notes
+        </button>
+
+        <button
+          type="button"
+          routerLink="/profile">
+          Profile
+        </button>
+
+        <button
+          type="button"
+          routerLink="/settings">
+          Settings
+        </button>
+
+        <button
+          type="button"
+          class="logout-btn"
+          (click)="logout()">
+          Logout
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ADD NOTE SECTION -->
+
+    <div class="add-section">
+
+      <div class="note-form">
+
+        <!-- TITLE -->
+
+        <div class="title-wrapper">
+
+          <input
+            type="text"
+            [(ngModel)]="newTitle"
+            placeholder="Enter title..." />
+
+          <button
+            type="button"
+            class="mic-btn"
+            (click)="startVoiceInput('title')">
+            🎤
+          </button>
+
+        </div>
+
+        <!-- BODY + ADD BUTTON -->
+
+        <div class="body-row">
+
+          <div class="body-wrapper">
+
+            <textarea
+              [(ngModel)]="newBody"
+              placeholder="Write your note...">
+            </textarea>
+
+            <button
+              type="button"
+              class="mic-btn"
+              (click)="startVoiceInput('body')">
+              🎤
+            </button>
+
+          </div>
+
+          <button
+            type="button"
+            class="add-btn"
+            (click)="addNote()">
+            Add Note
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- MESSAGE -->
+
+    @if (noteMessage) {
+
+      <div class="message-row">
+
+        {{ noteMessage }}
+
+      </div>
+
+    }
+
+    <!-- PINNED NOTES -->
+
+    <h2 class="notes-heading">
+
+      Pinned Notes
+
+    </h2>
+
+    <div class="notes-container">
+
+      @for (
+        note of pinnedNotes();
+        track note.id
+      ) {
+
+        <app-note
+          [note]="note"
+          (deleteEvent)="deleteNote($event)"
+          (editEvent)="editNote($event)"
+          (pinEvent)="togglePin($event)">
+        </app-note>
+
       }
-      @else {
-        Light Mode
-      }
-    </button>
-  </div>
 
-  <div class="title-section">
-    <h1>Notes App</h1>
-  </div>
-
-  <div class="right-actions">
-    <button type="button" routerLink="/profile">
-      Profile
-    </button>
-
-    <button type="button" routerLink="/settings">
-      Settings
-    </button>
-
-    <button
-      type="button"
-      class="logout-btn"
-      (click)="logout()"
-    >
-      Logout
-    </button>
-  </div>
-
-</div>
-
-<div class="add-section">
-
-  <div class="note-input-wrapper">
-
-    <input
-      type="text"
-      [(ngModel)]="newNote"
-      placeholder="Write a note..."
-    />
-
-    <button
-      class="mic-btn"
-      type="button"
-      (click)="startVoiceInput()"
-    >
-      🎤
-    </button>
-
-  </div>
-
-  <button (click)="addNote()">
-    Add Note
-  </button>
-
-</div>
-
-<div class="search-section">
-
-  <input
-    type="text"
-    [(ngModel)]="searchText"
-    placeholder="Search notes..."
-  />
-
-  <button
-    class="search-btn"
-    type="button"
-    (click)="searchNotes()"
-  >
-    Search
-  </button>
-
-</div>
-
-<div
-  class="message-row"
-  *ngIf="noteMessage"
->
-  <p>{{ noteMessage }}</p>
-</div>
-
-<h2 class="notes-heading">
-  My Notes
-</h2>
-
-<div class="notes-container">
-
-  @for(
-    note of filteredNotes();
-    track note.id
-  ) {
-
-    <app-note
-      [note]="note"
-      (deleteEvent)="deleteNote($event)"
-      (editEvent)="editNote($event)"
-      (pinEvent)="togglePin($event)"
-    >
-    </app-note>
-
-  }
-
-</div>
-
+    </div>
 
   </div>
 

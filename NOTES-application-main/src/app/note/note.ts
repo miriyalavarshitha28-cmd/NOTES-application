@@ -18,49 +18,49 @@ export class NoteComponent {
 
   @Input() note: any;
 
-  @Output() deleteEvent =
-    new EventEmitter<string>();
+  @Output()
+  deleteEvent = new EventEmitter<string>();
 
-  @Output() editEvent =
-    new EventEmitter<any>();
+  @Output()
+  editEvent = new EventEmitter<any>();
 
-  @Output() pinEvent =
-    new EventEmitter<any>();
+  @Output()
+  pinEvent = new EventEmitter<any>();
 
   isEditing = false;
 
-  editedText = '';
+  editedTitle = '';
+
+  editedBody = '';
 
   deleteNote() {
     this.deleteEvent.emit(this.note.id);
   }
 
   startEdit() {
-
     this.isEditing = true;
 
-    this.editedText = this.note.text;
+    this.editedTitle = this.note.title;
+
+    this.editedBody = this.note.body;
   }
 
-  togglePin() {
+ togglePin() {
 
-    this.pinEvent.emit({
+  const updatedNote = {
+    ...this.note,
+    pinned: !this.note.pinned
+  };
 
-      ...this.note,
+  this.pinEvent.emit(updatedNote);
 
-      pinned: !this.note.pinned
-
-    });
-  }
+}
 
   saveEdit() {
-
     this.editEvent.emit({
-
       ...this.note,
-
-      text: this.editedText
-
+      title: this.editedTitle,
+      body: this.editedBody
     });
 
     this.isEditing = false;

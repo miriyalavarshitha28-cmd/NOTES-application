@@ -2,7 +2,9 @@
 
   @if(!isEditing) {
 
-    <h3>{{ note.text }}</h3>
+    <h3>{{ note.title }}</h3>
+
+    <p>{{ note.body }}</p>
 
     <small>{{ note.date }}</small>
 
@@ -38,16 +40,21 @@
 
       <input
         type="text"
-        [(ngModel)]="editedText"
-        placeholder="Edit your note..."
+        [(ngModel)]="editedTitle"
+        placeholder="Edit title..."
       />
+
+      <textarea
+        [(ngModel)]="editedBody"
+        placeholder="Edit note..."
+      ></textarea>
 
       <button (click)="saveEdit()">
         Save
-    </button>
+      </button>
 
-  </div>
+    </div>
 
-}
+  }
 
 </div>

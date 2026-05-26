@@ -1,9 +1,14 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, IsBoolean } from 'class-validator';
 
 export class UpdateNoteDto {
+
   @IsOptional()
   @IsString()
-  text?: string;
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  body?: string;
 
   @IsOptional()
   @IsString()
@@ -12,4 +17,5 @@ export class UpdateNoteDto {
   @IsOptional()
   @IsBoolean()
   pinned?: boolean;
+
 }

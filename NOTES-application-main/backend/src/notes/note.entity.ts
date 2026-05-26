@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('notes')
 export class Note {
+
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -9,7 +10,10 @@ export class Note {
   userId!: string;
 
   @Column()
-  text!: string;
+  title!: string;
+
+  @Column('text')
+  body!: string;
 
   @Column()
   date!: string;
