@@ -15,11 +15,15 @@ export class NotesController {
   @Get()
   findAll(
     @Query('userId') userId: string,
-    @Query('pinned') pinned?: string
+    @Query('pinned') pinned?: string,
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string
   ) {
     return this.notesService.findAllByUser(
       userId,
-      pinned
+      pinned,
+      limit,
+      offset
     );
   }
 

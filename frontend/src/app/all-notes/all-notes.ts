@@ -35,6 +35,16 @@ export class AllNotesComponent implements OnInit {
 
   searchText = signal('');
 
+  readonly pageSize = 5;
+
+  private currentUserId = '';
+
+  private offset = 0;
+
+  private loading = false;
+
+  private hasMore = true;
+
   platformId = inject(PLATFORM_ID);
 
   constructor(
@@ -43,15 +53,22 @@ export class AllNotesComponent implements OnInit {
     console.log('AllNotesComponent initialized');
   }
 
+  private sortNotesByUpdatedAt(notes: any[]) {
+    return [...notes].sort((a, b) =>
+      new Date(b?.updatedAt || 0).getTime() -
+      new Date(a?.updatedAt || 0).getTime()
+    );
+  }
+
   ngOnInit() {
 
     if (isPlatformBrowser(this.platformId)) {
-      this.loadNotes();
+      this.loadInitialNotes();
     }
 
   }
 
-  loadNotes() {
+  loadInitialNotes() {
 
     if (typeof localStorage === 'undefined') {
       return;
@@ -69,22 +86,71 @@ export class AllNotesComponent implements OnInit {
       return;
     }
 
+    this.currentUserId = userId;
+    this.offset = 0;
+    this.hasMore = true;
+    this.notes.set([]);
+    this.loadMoreNotes();
+
+  }
+
+  loadMoreNotes() {
+
+    if (!this.currentUserId || this.loading || !this.hasMore) {
+      return;
+    }
+
+    this.loading = true;
+
     this.backendService
-      .getNotes(userId)
+      .getNotes(
+        this.currentUserId,
+        undefined,
+        this.pageSize,
+        this.offset
+      )
       .subscribe({
         next: (notes) => {
 
           console.log('Notes loaded:', notes);
 
-          this.notes.set(notes);
+          this.notes.update(currentNotes =>
+            this.sortNotesByUpdatedAt([
+              ...currentNotes,
+              ...notes
+            ])
+          );
+
+          this.offset += notes.length;
+          this.hasMore = notes.length === this.pageSize;
+          this.loading = false;
 
         },
         error: (err) => {
 
           console.error('Failed to load notes', err);
+          this.loading = false;
 
         }
       });
+
+  }
+
+  onScroll() {
+
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    const scrollPosition =
+      window.innerHeight + window.scrollY;
+
+    const threshold =
+      document.documentElement.scrollHeight - 250;
+
+    if (scrollPosition >= threshold) {
+      this.loadMoreNotes();
+    }
 
   }
 
@@ -110,7 +176,7 @@ export class AllNotesComponent implements OnInit {
         .includes(text)
     );
 
-  }).sort((a, b) => Number(b.pinned) - Number(a.pinned));
+  });
 
 });
 deleteNote(id: string) {
@@ -120,7 +186,14 @@ deleteNote(id: string) {
     .subscribe(() => {
 
       this.notes.update(notes =>
-        notes.filter(note => note.id !== id)
+        {
+          const remainingNotes =
+            notes.filter(note => note.id !== id);
+
+          this.offset = remainingNotes.length;
+
+          return remainingNotes;
+        }
       );
 
     });
@@ -136,13 +209,16 @@ pinNote(note: any) {
     .subscribe((updatedNote: any) => {
 
       this.notes.update(notes =>
-        notes.map(n =>
-          n.id === note.id
-            ? {
-                ...n,
-                pinned: Boolean(updatedNote?.pinned ?? !note.pinned)
-              }
-            : n
+        this.sortNotesByUpdatedAt(
+          notes.map(n =>
+            n.id === note.id
+              ? {
+                  ...n,
+                  ...updatedNote,
+                  pinned: Boolean(updatedNote?.pinned ?? !note.pinned)
+                }
+              : n
+          )
         )
       );
 
@@ -167,17 +243,20 @@ editNote(note: any) {
       title,
       body
     })
-    .subscribe(() => {
+    .subscribe((updatedNote: any) => {
 
       this.notes.update(notes =>
-        notes.map(n =>
-          n.id === note.id
-            ? {
-                ...n,
-                title,
-                body
-              }
-            : n
+        this.sortNotesByUpdatedAt(
+          notes.map(n =>
+            n.id === note.id
+              ? {
+                  ...n,
+                  ...updatedNote,
+                  title,
+                  body
+                }
+              : n
+          )
         )
       );
 

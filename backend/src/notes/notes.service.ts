@@ -25,12 +25,25 @@ export class NotesService {
 
   findAllByUser(
     userId: string,
-    pinned?: string
+    pinned?: string,
+    limit?: string,
+    offset?: string
   ) {
     const pinnedFilter =
       pinned === undefined
         ? {}
         : { pinned: pinned === 'true' };
+
+    const parsedLimit = Number(limit);
+    const parsedOffset = Number(offset);
+    const take =
+      Number.isFinite(parsedLimit) && parsedLimit > 0
+        ? Math.min(parsedLimit, 50)
+        : undefined;
+    const skip =
+      Number.isFinite(parsedOffset) && parsedOffset >= 0
+        ? parsedOffset
+        : undefined;
 
     return this.notesRepository.find({
       where: {
@@ -39,9 +52,10 @@ export class NotesService {
         ...pinnedFilter
       },
       order: {
-        pinned: 'DESC',
         updatedAt: 'DESC'
-      }
+      },
+      take,
+      skip
     });
   }
 

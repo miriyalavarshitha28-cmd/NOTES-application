@@ -81,13 +81,23 @@ export class BackendService {
   return this.http.post(`${this.apiUrl}/notes`, note);
 }
 
-  getNotes(userId: string, pinned?: boolean) {
+  getNotes(userId: string, pinned?: boolean, limit?: number, offset?: number) {
     const pinnedQuery =
       pinned === undefined
         ? ''
         : `&pinned=${pinned}`;
 
-    return this.http.get<any[]>(`${this.apiUrl}/notes?userId=${userId}${pinnedQuery}`);
+    const limitQuery =
+      limit === undefined
+        ? ''
+        : `&limit=${limit}`;
+
+    const offsetQuery =
+      offset === undefined
+        ? ''
+        : `&offset=${offset}`;
+
+    return this.http.get<any[]>(`${this.apiUrl}/notes?userId=${userId}${pinnedQuery}${limitQuery}${offsetQuery}`);
   }
 
  updateNote(id: string, dto: {
