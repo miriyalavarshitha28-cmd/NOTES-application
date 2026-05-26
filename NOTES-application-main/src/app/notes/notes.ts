@@ -7,6 +7,7 @@ import { NoteComponent } from '../note/note';
 import { AuthService } from '../services/auth';
 import { BackendService } from '../services/backend.service';
 
+
 interface Note {
   id: string;
   title: string;
@@ -56,8 +57,21 @@ export class NotesComponent implements OnInit {
   searchText = '';
 
   toggleTheme() {
-    this.darkMode.update(value => !value);
-  }
+
+  this.darkMode.update(current => {
+
+    const newValue = !current;
+
+    localStorage.setItem(
+      'theme',
+      newValue ? 'dark' : 'light'
+    );
+
+    return newValue;
+
+  });
+
+}
 
   constructor(
     private router: Router,
@@ -82,6 +96,8 @@ export class NotesComponent implements OnInit {
       }
     }
   }
+
+  
 
   private persistCurrentUser() {
     if (typeof window === 'undefined') {
@@ -361,18 +377,27 @@ togglePin(updatedNote: any) {
 }
 
   ngOnInit() {
-    if (typeof window === 'undefined') {
-      return;
-    }
 
-    this.noteMessage = '';
-
-    if (this.currentUserId) {
-      this.loadNotes();
-    } else if (this.currentUserEmail) {
-      this.resolveCurrentUserId();
-    }
+  if (typeof window === 'undefined') {
+    return;
   }
+
+  const savedTheme =
+    localStorage.getItem('theme');
+
+  this.darkMode.set(
+    savedTheme !== 'light'
+  );
+
+  this.noteMessage = '';
+
+  if (this.currentUserId) {
+    this.loadNotes();
+  } else if (this.currentUserEmail) {
+    this.resolveCurrentUserId();
+  }
+
+}
   startVoiceInput(field: 'title' | 'body') {
 
   const SpeechRecognition =

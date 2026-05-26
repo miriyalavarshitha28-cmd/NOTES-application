@@ -1,39 +1,95 @@
 <div class="container">
+
   <div class="page-header">
+
     <div class="header-title">
       <h1>Settings</h1>
     </div>
+
     <div class="header-actions">
-      <button routerLink="/notes">Back to Notes</button>
+      <button routerLink="/notes">
+        Back to Notes
+      </button>
     </div>
+
   </div>
 
   <section class="page-card">
+
     <div class="detail-grid">
+
       <div class="detail-item">
         <span>Language</span>
         <strong>{{ settings.language }}</strong>
       </div>
+
       <div class="detail-item">
         <span>Notifications</span>
-        <strong>{{ settings.notifications ? 'Enabled' : 'Disabled' }}</strong>
+        <strong>
+          {{ settings.notifications ? 'Enabled' : 'Disabled' }}
+        </strong>
       </div>
+
       <div class="detail-item">
         <span>Theme</span>
-        <strong>{{ settings.darkMode }}</strong>
+
+        <div class="theme-options">
+
+          <label>
+            <input
+              type="radio"
+              name="theme"
+              value="light"
+              [(ngModel)]="theme"
+            />
+            Light Mode
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="theme"
+              value="dark"
+              [(ngModel)]="theme"
+            />
+            Dark Mode
+          </label>
+
+        </div>
+
       </div>
+
       <div class="detail-item">
         <span>Autosave</span>
         <strong>{{ settings.autosave }}</strong>
       </div>
+
       <div class="detail-item">
         <span>Privacy</span>
         <strong>{{ settings.privacy }}</strong>
       </div>
+
       <div class="detail-item">
         <span>Reminder Emails</span>
-        <strong>{{ settings.reminderEmails ? 'On' : 'Off' }}</strong>
+        <strong>
+          {{ settings.reminderEmails ? 'On' : 'Off' }}
+        </strong>
       </div>
+
     </div>
+
+    <div style="margin-top: 30px; text-align:center;">
+
+      <button
+        type="button"
+        (click)="saveTheme()">
+
+        Save Theme
+
+      </button>
+
+    </div>
+
   </section>
+
 </div>

@@ -365,3 +365,45 @@ button:hover {
   transform: translateY(-3px);
 
 }
+
+.container {
+  background: linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b,
+    #312e81
+  );
+  color: white;
+}
+
+
+/* LIGHT MODE */
+
+:not(.dark) .container {
+
+  background: linear-gradient(
+    135deg,
+    #f8fafc,
+    #e2e8f0,
+    #cbd5e1
+  );
+
+  color: #111827;
+
+}
+
+:not(.dark) .title-wrapper input,
+:not(.dark) .body-wrapper textarea,
+:not(.dark) .search-section input {
+
+  background: white;
+  color: #111827;
+  border: 2px solid #6366f1;
+
+}
+
+:not(.dark) .notes-heading {
+
+  color: #111827;
+
+}
