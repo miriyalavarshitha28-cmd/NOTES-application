@@ -1,6 +1,6 @@
 .container {
 
-  min-height: 100vh;
+  height: 100vh;
 
   padding: 30px;
 
@@ -13,6 +13,14 @@
   );
 
   color: white;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
 }
 
 h1 {
@@ -34,7 +42,7 @@ h1 {
 
   justify-content: center;
 
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .search-section input {
@@ -63,6 +71,60 @@ h1 {
   color: #d1d5db;
 }
 
+.notes-viewport {
+
+  width: min(900px, 100%);
+
+  flex: 1;
+
+  min-height: 0;
+
+  margin: 0 auto;
+
+  padding: 18px 18px 28px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  scrollbar-gutter: stable;
+
+  border: 1px solid rgba(255,255,255,0.22);
+
+  border-radius: 20px;
+
+  background: rgba(15,23,42,0.26);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 18px 45px rgba(0,0,0,0.2);
+}
+
+.notes-viewport::-webkit-scrollbar {
+
+  width: 12px;
+}
+
+.notes-viewport::-webkit-scrollbar-track {
+
+  background: rgba(255,255,255,0.18);
+
+  border-radius: 999px;
+}
+
+.notes-viewport::-webkit-scrollbar-thumb {
+
+  background: linear-gradient(
+    180deg,
+    #a855f7,
+    #ec4899
+  );
+
+  border-radius: 999px;
+
+  border: 3px solid rgba(30,27,75,0.95);
+}
+
 .notes-container {
 
   display: flex;
@@ -70,6 +132,10 @@ h1 {
   flex-wrap: wrap;
 
   justify-content: center;
+
+  max-width: 760px;
+
+  margin: 0 auto;
 
   gap: 30px;
 }
@@ -81,6 +147,8 @@ h1 {
   min-height: 220px;
 
   padding: 25px;
+
+  box-sizing: border-box;
 
   border-radius: 24px;
 
@@ -99,6 +167,27 @@ h1 {
   position: relative;
 
   overflow: hidden;
+}
+
+.feed-status {
+
+  max-width: 760px;
+
+  margin: 24px auto 0;
+
+  padding: 14px 18px;
+
+  border-radius: 16px;
+
+  background: rgba(255,255,255,0.14);
+
+  color: #f8fafc;
+
+  text-align: center;
+
+  font-weight: bold;
+
+  backdrop-filter: blur(10px);
 }
 
 .note-card::before {
@@ -224,7 +313,7 @@ button[routerLink] {
 
   display: block;
 
-  margin: 40px auto;
+  margin: 22px auto 0;
 
   padding: 14px 30px;
 
@@ -250,4 +339,23 @@ button[routerLink] {
 button[routerLink]:hover {
 
   transform: scale(1.05);
+}
+
+@media (max-width: 760px) {
+
+  .search-section input {
+
+    width: 100%;
+  }
+
+  .note-card {
+
+    width: min(320px, 100%);
+  }
+
+  .notes-viewport {
+
+    padding: 14px;
+  }
+
 }

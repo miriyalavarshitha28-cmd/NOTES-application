@@ -1,67 +1,82 @@
-<div
-  class="container"
-  (window:scroll)="onScroll()">
+<div class="container">
 
   <h1>All Notes</h1>
 
   <div class="search-section">
     <input
-  type="text"
-  [ngModel]="searchText()"
-  (ngModelChange)="searchText.set($event)"
-  placeholder="Search notes..."
-/>
+      type="text"
+      [ngModel]="searchText()"
+      (ngModelChange)="searchText.set($event)"
+      placeholder="Search notes..." />
   </div>
 
-  <div class="notes-container">
+  <div
+    class="notes-viewport"
+    (scroll)="onNotesScroll($event)">
 
-    @for (
-      note of filteredNotes();
-      track note.id
-    ) {
+    <div class="notes-container">
 
-      <div class="note-card">
+      @for (
+        note of filteredNotes();
+        track note.id
+      ) {
 
-        <h3>{{ note.title }}</h3>
+        <div class="note-card">
 
-        @if (note.pinned) {
-          <small>Pinned</small>
-        }
+          <h3>{{ note.title }}</h3>
 
-        <p>{{ note.body }}</p>
+          @if (note.pinned) {
+            <small>Pinned</small>
+          }
 
-        <small>
-          {{
-            note.createdAt
-              ? (note.createdAt | date:'medium')
-              : ''
-          }}
-        </small>
+          <p>{{ note.body }}</p>
 
-        <div class="actions">
+          <small>
+            {{
+              note.createdAt
+                ? (note.createdAt | date:'medium')
+                : ''
+            }}
+          </small>
 
-          <button
-            type="button"
-            (click)="editNote(note)">
-            Edit
-          </button>
+          <div class="actions">
 
-          <button
-            type="button"
-            (click)="deleteNote(note.id)">
-            Delete
-          </button>
+            <button
+              type="button"
+              (click)="editNote(note)">
+              Edit
+            </button>
 
-          <button
-            type="button"
-            (click)="pinNote(note)">
-            {{ note.pinned ? 'Unpin' : 'Pin' }}
-          </button>
+            <button
+              type="button"
+              (click)="deleteNote(note.id)">
+              Delete
+            </button>
+
+            <button
+              type="button"
+              (click)="pinNote(note)">
+              {{ note.pinned ? 'Unpin' : 'Pin' }}
+            </button>
+
+          </div>
 
         </div>
 
-      </div>
+      }
 
+    </div>
+
+    @if (loadingNotes()) {
+      <div class="feed-status">
+        Loading notes...
+      </div>
+    }
+
+    @if (!hasMoreNotes() && notes().length > 0) {
+      <div class="feed-status">
+        You have reached the end.
+      </div>
     }
 
   </div>

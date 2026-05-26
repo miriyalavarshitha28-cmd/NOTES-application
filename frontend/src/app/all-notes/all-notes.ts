@@ -35,6 +35,10 @@ export class AllNotesComponent implements OnInit {
 
   searchText = signal('');
 
+  loadingNotes = signal(false);
+
+  hasMoreNotes = signal(true);
+
   readonly pageSize = 5;
 
   private currentUserId = '';
@@ -44,6 +48,8 @@ export class AllNotesComponent implements OnInit {
   private loading = false;
 
   private hasMore = true;
+
+  private lastScrollTop = 0;
 
   platformId = inject(PLATFORM_ID);
 
@@ -63,6 +69,8 @@ export class AllNotesComponent implements OnInit {
   ngOnInit() {
 
     if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo(0, 0);
+      this.lastScrollTop = 0;
       this.loadInitialNotes();
     }
 
@@ -89,6 +97,8 @@ export class AllNotesComponent implements OnInit {
     this.currentUserId = userId;
     this.offset = 0;
     this.hasMore = true;
+    this.hasMoreNotes.set(true);
+    this.lastScrollTop = 0;
     this.notes.set([]);
     this.loadMoreNotes();
 
@@ -101,6 +111,7 @@ export class AllNotesComponent implements OnInit {
     }
 
     this.loading = true;
+    this.loadingNotes.set(true);
 
     this.backendService
       .getNotes(
@@ -123,30 +134,46 @@ export class AllNotesComponent implements OnInit {
 
           this.offset += notes.length;
           this.hasMore = notes.length === this.pageSize;
+          this.hasMoreNotes.set(this.hasMore);
           this.loading = false;
+          this.loadingNotes.set(false);
 
         },
         error: (err) => {
 
           console.error('Failed to load notes', err);
           this.loading = false;
+          this.loadingNotes.set(false);
 
         }
       });
 
   }
 
-  onScroll() {
+  onNotesScroll(event: Event) {
 
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
+    const notesViewport =
+      event.target as HTMLElement;
+
+    const isScrollingDown =
+      notesViewport.scrollTop > this.lastScrollTop;
+
+    this.lastScrollTop =
+      notesViewport.scrollTop;
+
+    if (!isScrollingDown) {
+      return;
+    }
+
     const scrollPosition =
-      window.innerHeight + window.scrollY;
+      notesViewport.scrollTop + notesViewport.clientHeight;
 
     const threshold =
-      document.documentElement.scrollHeight - 250;
+      notesViewport.scrollHeight - 240;
 
     if (scrollPosition >= threshold) {
       this.loadMoreNotes();
