@@ -170,6 +170,7 @@ DELETE /notes/:id
 ### Frontend
 
 ```bash
+cd frontend
 npm install
 ng serve
 ```
