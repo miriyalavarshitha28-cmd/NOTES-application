@@ -7,8 +7,6 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/user.entity';
 import { NotesModule } from './notes/notes.module';
 import { Note } from './notes/note.entity';
-import { TasksModule } from './tasks/tasks.module';
-import { Task } from './tasks/task.entity';
 
 @Module({
   imports: [
@@ -23,13 +21,12 @@ import { Task } from './tasks/task.entity';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Note, Task],
+        entities: [User, Note],
         synchronize: true,
       }),
     }),
     UsersModule,
     NotesModule,
-    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],

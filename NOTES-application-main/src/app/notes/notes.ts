@@ -232,7 +232,7 @@ export class NotesComponent implements OnInit {
           userId,
           title: this.newTitle,
           body: this.newBody,
-          date: new Date().toLocaleString(),
+          // date: new Date().toLocaleString(),
           pinned: false
         })
         .subscribe({
@@ -312,7 +312,6 @@ export class NotesComponent implements OnInit {
     .updateNote(updatedNote.id, {
       title: updatedNote.title,
       body: updatedNote.body,
-      date: updatedNote.date,
       pinned: updatedNote.pinned
     })
     .subscribe({

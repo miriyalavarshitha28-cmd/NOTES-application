@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
 
 @Entity('notes')
 export class Note {
@@ -15,8 +20,8 @@ export class Note {
   @Column('text')
   body!: string;
 
-  @Column()
-  date!: string;
+  @UpdateDateColumn()
+  date!: Date;
 
   @Column({ default: false })
   pinned!: boolean;

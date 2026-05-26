@@ -41,7 +41,6 @@ export class BackendService {
   userId: string;
   title: string;
   body: string;
-  date: string;
   pinned: boolean;
 }) {
   return this.http.post(`${this.apiUrl}/notes`, note);

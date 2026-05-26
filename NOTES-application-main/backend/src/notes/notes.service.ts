@@ -17,8 +17,7 @@ export class NotesService {
     userId: createNoteDto.userId,
     title: createNoteDto.title,
     body: createNoteDto.body,
-    date: createNoteDto.date,
-    pinned: createNoteDto.pinned
+    pinned: createNoteDto.pinned ?? false
   });
 
   return this.notesRepository.save(note);
@@ -33,9 +32,14 @@ export class NotesService {
   }
 
   async update(id: string, updateNoteDto: UpdateNoteDto) {
-    await this.notesRepository.update(id, updateNoteDto);
-    return this.findOne(id);
-  }
+
+  await this.notesRepository.update(id, {
+    ...updateNoteDto,
+    date: new Date()
+  });
+
+  return this.findOne(id);
+}
 
 
   remove(id: string) {

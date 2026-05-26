@@ -1,5 +1,7 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
+
 export class CreateNoteDto {
+
   @IsNotEmpty()
   userId!: string;
 
@@ -9,8 +11,8 @@ export class CreateNoteDto {
   @IsNotEmpty()
   body!: string;
 
-  @IsNotEmpty()
-  date!: string;
-
+  @IsOptional()
+  @IsBoolean()
   pinned?: boolean;
+
 }
