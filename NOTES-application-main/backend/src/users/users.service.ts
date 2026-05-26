@@ -1,18 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException
+} from '@nestjs/common';
+
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { Repository } from 'typeorm';
+
 import { User } from './user.entity';
+
 import { CreateUserDto } from './dto/create-user.dto';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
+
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    const user = this.usersRepository.create(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      10
+    );
+
+    const user = this.usersRepository.create({
+      ...createUserDto,
+      password: hashedPassword
+    });
+
     return this.usersRepository.save(user);
   }
 
@@ -21,10 +41,47 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    return this.usersRepository.findOne({ where: { id } });
+    return this.usersRepository.findOne({
+      where: { id }
+    });
   }
 
   findByEmail(email: string) {
-    return this.usersRepository.findOne({ where: { email } });
+    return this.usersRepository.findOne({
+      where: { email }
+    });
+  }
+
+  async validateUser(
+    email: string,
+    password: string
+  ) {
+
+    const user =
+      await this.usersRepository.findOne({
+        where: { email }
+      });
+
+    if (!user) {
+      throw new UnauthorizedException(
+        'User not found'
+      );
+    }
+
+    const isPasswordValid =
+      await bcrypt.compare(
+        password,
+        user.password
+      );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException(
+        'Invalid password'
+      );
+    }
+
+    const { password: _, ...safeUser } = user;
+
+    return safeUser;
   }
 }
