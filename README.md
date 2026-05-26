@@ -60,6 +60,7 @@ A full-stack Notes Management Application built using Angular, NestJS, PostgreSQ
 * TypeScript
 * TypeORM
 * PostgreSQL
+* bcrypt
 
 ### Tools
 
@@ -177,20 +178,6 @@ PUT /notes/:id
 
 DELETE /notes/:id
 
-### Tasks
-
-POST /tasks
-
-GET /tasks
-
-GET /tasks/:id
-
-PUT /tasks/:id
-
-DELETE /tasks/:id
-
----
-
 ## Installation
 
 ### Frontend
@@ -212,6 +199,10 @@ http://localhost:4200
 cd backend
 
 npm install
+
+npm install bcrypt
+
+npm install --save-dev @types/bcrypt
 
 npm run start:dev
 ```
@@ -240,17 +231,19 @@ DB_NAME=notesapp
 
 ## Future Enhancements
 
-* Global Search with Backend Filtering
 * Categories and Tags
 * Note Sharing
 * File Attachments
-* Voice Note Storage
 * Rich Text Editor
 * Email Notifications
 * Note Export to PDF
 * Real-Time Collaboration
 
 ---
+
+## Security
+
+* Passwords are securely stored using bcrypt hashing before being saved to the database.
 
 ## Learning Outcomes
 
