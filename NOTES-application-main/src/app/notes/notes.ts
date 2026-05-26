@@ -198,7 +198,7 @@ export class NotesComponent implements OnInit {
       this.backendService
         .createNote({
           userId,
-          text: this.newNote,
+          title: this.newNote,
           date: new Date().toLocaleString(),
           pinned: false
         })
