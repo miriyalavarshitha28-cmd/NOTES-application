@@ -1,119 +1,55 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { BackendService, User } from '../services/backend.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { User } from '../services/backend.service';
 
 interface UserProfile {
-  fullName: string;
-  email: string;
+  userName: string;
+  userEmail: string;
   userId: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css']
 })
 export class ProfileComponent implements OnInit {
   profile: UserProfile = {
-    fullName: '',
-    email: '',
-    userId: '',
-    createdAt: '',
-    updatedAt: ''
+    userName: '',
+    userEmail: '',
+    userId: ''
   };
 
   userId = '';
   message = '';
-  isSaving = false;
+  isLoading = true;
 
-  constructor(private backendService: BackendService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.loadCurrentUser();
-  }
+    const user = this.route.snapshot.data['profile'] as User | null;
 
-  private loadCurrentUser() {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    const stored = localStorage.getItem('currentUser');
-    if (!stored) {
+    if (!user) {
+      this.isLoading = false;
       this.message = 'Please login again to load your profile.';
       return;
     }
 
-    try {
-      const currentUser = JSON.parse(stored);
-      this.userId = String(currentUser?.id || '');
-
-      if (!this.userId) {
-        this.message = 'Please login again to load your profile.';
-        return;
-      }
-
-      this.backendService.getUserById(this.userId).subscribe({
-        next: user => this.setProfileFromUser(user),
-        error: () => {
-          this.setProfileFromUser(currentUser);
-          this.message = 'Showing saved login details. Backend profile could not be loaded.';
-        }
-      });
-    } catch {
-      this.message = 'Please login again to load your profile.';
-    }
+    this.setProfileFromUser(user);
   }
 
-  saveProfile() {
-    if (!this.userId) {
-      this.message = 'Please login again before saving your profile.';
-      return;
-    }
-
-    this.isSaving = true;
-    this.message = '';
-
-    this.backendService
-      .updateUser(this.userId, {
-        name: this.profile.fullName,
-        email: this.profile.email
-      })
-      .subscribe({
-        next: user => {
-          this.setProfileFromUser(user);
-          localStorage.setItem(
-            'currentUser',
-            JSON.stringify({
-              id: user.id,
-              name: user.name,
-              email: user.email
-            })
-          );
-          this.message = 'Profile saved successfully.';
-          this.isSaving = false;
-        },
-        error: err => {
-          this.message =
-            err?.error?.message || 'Profile could not be saved. Please try again.';
-          this.isSaving = false;
-        }
-      });
-  }
-
-  private setProfileFromUser(user: Partial<User>) {
-    const name = String(user?.name || '');
-    const email = String(user?.email || '');
+  private setProfileFromUser(user: User) {
+    this.userId = String(user.id || '');
 
     this.profile = {
-      fullName: name,
-      email,
-      userId: String(user?.id || this.userId || ''),
+      userName: String(user.name || ''),
+      userEmail: String(user.email || ''),
+      userId: this.userId,
       createdAt: user?.createdAt
         ? new Date(user.createdAt).toLocaleString()
         : '',
@@ -121,5 +57,13 @@ export class ProfileComponent implements OnInit {
         ? new Date(user.updatedAt).toLocaleString()
         : ''
     };
+
+    this.isLoading = false;
+
+    if (!this.profile.userName || !this.profile.userEmail) {
+      this.message = 'Backend profile was loaded, but name or email is missing from the user record.';
+    } else {
+      this.message = '';
+    }
   }
 }

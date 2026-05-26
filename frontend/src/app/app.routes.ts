@@ -6,6 +6,7 @@ import { SignupComponent } from './signup/signup';
 
 import { AllNotesComponent } from './all-notes/all-notes';
 import { NotesComponent } from './notes/notes';
+import { profileResolver } from './profile/profile.resolver';
 
 
 
@@ -36,7 +37,10 @@ export const routes: Routes = [
 
   {
     path: 'profile',
-    loadComponent: () => import('./profile/profile').then(m => m.ProfileComponent)
+    loadComponent: () => import('./profile/profile').then(m => m.ProfileComponent),
+    resolve: {
+      profile: profileResolver
+    }
   },
 
   {

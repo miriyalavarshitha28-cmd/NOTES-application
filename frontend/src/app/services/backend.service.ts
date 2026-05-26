@@ -6,7 +6,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  password: string;
+  password?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -36,7 +36,11 @@ export class BackendService {
 
   constructor(private http: HttpClient) {}
 
-  createUser(user: Omit<User, 'id'>) {
+  createUser(user: {
+    name: string;
+    email: string;
+    password: string;
+  }) {
     return this.http.post<User>(`${this.apiUrl}/users`, user);
   }
 

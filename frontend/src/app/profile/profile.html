@@ -12,37 +12,35 @@
   </div>
 
   <section class="page-card">
-    <form (ngSubmit)="saveProfile()">
-      <div class="detail-grid">
+    <div class="detail-grid" *ngIf="!isLoading">
       <div class="detail-item">
-        <label for="fullName">Full Name</label>
-        <input id="fullName" name="fullName" [(ngModel)]="profile.fullName" />
+        <span>User Name</span>
+        <strong class="detail-value">{{ profile.userName }}</strong>
       </div>
+
       <div class="detail-item">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" [(ngModel)]="profile.email" />
+        <span>User Email</span>
+        <strong class="detail-value">{{ profile.userEmail }}</strong>
       </div>
-      <div class="detail-item" *ngIf="profile.userId">
-        <label>User Id</label>
-        <strong>{{ profile.userId }}</strong>
+
+      <div class="detail-item">
+        <span>User Id</span>
+        <strong class="detail-value">{{ profile.userId }}</strong>
       </div>
+
       <div class="detail-item" *ngIf="profile.createdAt">
-        <label>Created At</label>
-        <strong>{{ profile.createdAt }}</strong>
+        <span>Created At</span>
+        <strong class="detail-value">{{ profile.createdAt }}</strong>
       </div>
+
       <div class="detail-item" *ngIf="profile.updatedAt">
-        <label>Updated At</label>
-        <strong>{{ profile.updatedAt }}</strong>
+        <span>Updated At</span>
+        <strong class="detail-value">{{ profile.updatedAt }}</strong>
       </div>
-      </div>
+    </div>
 
-      <p class="form-message" *ngIf="message">{{ message }}</p>
+    <p class="form-message" *ngIf="isLoading">Loading profile...</p>
 
-      <div class="form-actions">
-        <button type="submit" [disabled]="isSaving">
-          {{ isSaving ? 'Saving...' : 'Save Profile' }}
-        </button>
-      </div>
-    </form>
+    <p class="form-message" *ngIf="message">{{ message }}</p>
   </section>
 </div>

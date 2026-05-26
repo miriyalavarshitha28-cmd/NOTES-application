@@ -329,6 +329,15 @@ button:hover {
   padding: 0;
 }
 
+.mic-btn svg {
+
+  width: 22px;
+
+  height: 22px;
+
+  fill: #ffffff;
+}
+
 /* ADD NOTE */
 
 .add-btn {

@@ -64,34 +64,18 @@
   color: #2d0263;
 }
 
-.detail-item input {
+.detail-value {
+  display: block;
   width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
   border: 1px solid rgba(139, 92, 246, 0.28);
   border-radius: 14px;
   padding: 12px 14px;
   color: #2d0263;
-  font: inherit;
   background: #ffffff;
-  outline: none;
-}
-
-.detail-item input:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
-}
-
-.form-actions {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.form-actions button {
-  min-width: 160px;
-}
-
-.form-actions button:disabled {
-  cursor: not-allowed;
-  opacity: 0.7;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
 }
 
 .form-message {

@@ -14,6 +14,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { SettingsService } from '../settings/settings.service';
 
+type SafeUser = Omit<User, 'password'>;
+
 @Injectable()
 export class UsersService {
 
@@ -41,23 +43,29 @@ export class UsersService {
       savedUser.id
     );
 
-    return savedUser;
+    return this.toSafeUser(savedUser);
   }
 
-  findAll() {
-    return this.usersRepository.find();
+  async findAll() {
+    const users = await this.usersRepository.find();
+
+    return users.map(user => this.toSafeUser(user));
   }
 
-  findOne(id: string) {
-    return this.usersRepository.findOne({
+  async findOne(id: string) {
+    const user = await this.usersRepository.findOne({
       where: { id }
     });
+
+    return user ? this.toSafeUser(user) : null;
   }
 
-  findByEmail(email: string) {
-    return this.usersRepository.findOne({
+  async findByEmail(email: string) {
+    const user = await this.usersRepository.findOne({
       where: { email }
     });
+
+    return user ? this.toSafeUser(user) : null;
   }
 
   async update(
@@ -107,6 +115,12 @@ export class UsersService {
       );
     }
 
+    const { password: _, ...safeUser } = user;
+
+    return safeUser;
+  }
+
+  private toSafeUser(user: User): SafeUser {
     const { password: _, ...safeUser } = user;
 
     return safeUser;
