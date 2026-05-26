@@ -22,22 +22,6 @@
         <label for="email">Email</label>
         <input id="email" name="email" type="email" [(ngModel)]="profile.email" />
       </div>
-      <div class="detail-item">
-        <label for="username">Username</label>
-        <input id="username" name="username" [(ngModel)]="profile.username" />
-      </div>
-      <div class="detail-item">
-        <label for="plan">Plan</label>
-        <input id="plan" name="plan" [(ngModel)]="profile.plan" />
-      </div>
-      <div class="detail-item">
-        <label for="joined">Joined</label>
-        <input id="joined" name="joined" [(ngModel)]="profile.joined" />
-      </div>
-      <div class="detail-item">
-        <label for="favoriteColor">Favorite Color</label>
-        <input id="favoriteColor" name="favoriteColor" [(ngModel)]="profile.favoriteColor" />
-      </div>
       </div>
 
       <p class="form-message" *ngIf="message">{{ message }}</p>

@@ -7,10 +7,6 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  username?: string;
-  plan?: string;
-  joined?: string;
-  favoriteColor?: string;
 }
 
 export interface Settings {

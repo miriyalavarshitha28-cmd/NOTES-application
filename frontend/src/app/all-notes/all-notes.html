@@ -22,9 +22,19 @@
 
         <h3>{{ note.title }}</h3>
 
+        @if (note.pinned) {
+          <small>Pinned</small>
+        }
+
         <p>{{ note.body }}</p>
 
-        <small>{{ note.date }}</small>
+        <small>
+          {{
+            note.createdAt
+              ? (note.createdAt | date:'medium')
+              : ''
+          }}
+        </small>
 
         <div class="actions">
 
@@ -43,7 +53,7 @@
           <button
             type="button"
             (click)="pinNote(note)">
-            Pin
+            {{ note.pinned ? 'Unpin' : 'Pin' }}
           </button>
 
         </div>

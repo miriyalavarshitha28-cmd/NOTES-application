@@ -96,11 +96,6 @@ export class AllNotesComponent implements OnInit {
       .toLowerCase();
 
   return this.notes().filter(note => {
-
-    if (note.pinned) {
-      return false;
-    }
-
     if (!text) {
       return true;
     }
@@ -115,7 +110,7 @@ export class AllNotesComponent implements OnInit {
         .includes(text)
     );
 
-  });
+  }).sort((a, b) => Number(b.pinned) - Number(a.pinned));
 
 });
 deleteNote(id: string) {
@@ -136,12 +131,19 @@ pinNote(note: any) {
 
   this.backendService
     .updateNote(note.id, {
-      pinned: true
+      pinned: !note.pinned
     })
-    .subscribe(() => {
+    .subscribe((updatedNote: any) => {
 
       this.notes.update(notes =>
-        notes.filter(n => n.id !== note.id)
+        notes.map(n =>
+          n.id === note.id
+            ? {
+                ...n,
+                pinned: Boolean(updatedNote?.pinned ?? !note.pinned)
+              }
+            : n
+        )
       );
 
     });

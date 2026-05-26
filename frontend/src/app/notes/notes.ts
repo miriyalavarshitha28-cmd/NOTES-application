@@ -14,6 +14,7 @@ interface Note {
   body: string;
   date: string;
   pinned: boolean;
+  deletedAt?: string | null;
 }
 
 @Component({
@@ -214,8 +215,11 @@ export class NotesComponent implements OnInit {
     id: String(note?.id),
     title: String(note?.title ?? ''),
     body: String(note?.body ?? ''),
-    date: String(note?.date ?? new Date().toLocaleString()),
-    pinned: Boolean(note?.pinned ?? false)
+    date: note?.createdAt
+      ? new Date(note.createdAt).toLocaleString()
+      : '',
+    pinned: Boolean(note?.pinned ?? false),
+    deletedAt: note?.deletedAt ?? null
   };
 }
 

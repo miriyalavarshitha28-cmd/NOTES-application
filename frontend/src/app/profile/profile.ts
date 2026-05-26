@@ -7,10 +7,6 @@ import { BackendService, User } from '../services/backend.service';
 interface UserProfile {
   fullName: string;
   email: string;
-  username: string;
-  plan: string;
-  joined: string;
-  favoriteColor: string;
 }
 
 @Component({
@@ -23,11 +19,7 @@ interface UserProfile {
 export class ProfileComponent implements OnInit {
   profile: UserProfile = {
     fullName: '',
-    email: '',
-    username: '',
-    plan: 'Free',
-    joined: '',
-    favoriteColor: 'Blue'
+    email: ''
   };
 
   userId = '';
@@ -84,11 +76,7 @@ export class ProfileComponent implements OnInit {
     this.backendService
       .updateUser(this.userId, {
         name: this.profile.fullName,
-        email: this.profile.email,
-        username: this.profile.username,
-        plan: this.profile.plan,
-        joined: this.profile.joined,
-        favoriteColor: this.profile.favoriteColor
+        email: this.profile.email
       })
       .subscribe({
         next: user => {
@@ -115,20 +103,10 @@ export class ProfileComponent implements OnInit {
   private setProfileFromUser(user: Partial<User>) {
     const name = String(user?.name || '');
     const email = String(user?.email || '');
-    const joinedDate = new Date().toLocaleDateString('en-US', {
-      month: 'long',
-      year: 'numeric'
-    });
 
     this.profile = {
       fullName: name,
-      email,
-      username:
-        user?.username ||
-        (name ? name.toLowerCase().replace(/\s+/g, '.') : email.split('@')[0]),
-      plan: user?.plan || 'Free',
-      joined: user?.joined || joinedDate,
-      favoriteColor: user?.favoriteColor || 'Blue'
+      email
     };
   }
 }

@@ -67,11 +67,7 @@ export class UsersService {
     const allowedUpdates = Object.fromEntries(
       Object.entries({
         name: updateUserDto.name,
-        email: updateUserDto.email,
-        username: updateUserDto.username,
-        plan: updateUserDto.plan,
-        joined: updateUserDto.joined,
-        favoriteColor: updateUserDto.favoriteColor
+        email: updateUserDto.email
       }).filter(([, value]) => value !== undefined)
     );
 

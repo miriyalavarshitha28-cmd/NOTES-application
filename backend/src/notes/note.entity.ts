@@ -27,6 +27,9 @@ export class Note {
   @UpdateDateColumn()
   updatedAt!: Date;
 
+  @Column({ nullable: true })
+  deletedAt?: Date;
+
   @Column({ default: false })
   pinned!: boolean;
 }

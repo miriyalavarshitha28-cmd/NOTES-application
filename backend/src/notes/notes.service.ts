@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Note } from './note.entity';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
@@ -24,7 +24,16 @@ export class NotesService {
 }
 
   findAllByUser(userId: string) {
-    return this.notesRepository.find({ where: { userId } });
+    return this.notesRepository.find({
+      where: {
+        userId,
+        deletedAt: IsNull()
+      },
+      order: {
+        pinned: 'DESC',
+        updatedAt: 'DESC'
+      }
+    });
   }
 
   findOne(id: string) {
@@ -33,16 +42,20 @@ export class NotesService {
 
   async update(id: string, updateNoteDto: UpdateNoteDto) {
 
-  await this.notesRepository.update(id, {
-    ...updateNoteDto,
-    updatedAt: new Date().toISOString()
-  });
+  await this.notesRepository.update(id, updateNoteDto);
 
   return this.findOne(id);
 }
 
 
-  remove(id: string) {
-    return this.notesRepository.delete(id);
+  async remove(id: string) {
+    await this.notesRepository.update(
+      id,
+      {
+        deletedAt: new Date()
+      }
+    );
+
+    return this.findOne(id);
   }
 }
