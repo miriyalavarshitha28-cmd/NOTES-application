@@ -35,7 +35,7 @@ export class NotesService {
 
   await this.notesRepository.update(id, {
     ...updateNoteDto,
-    date: new Date()
+    updatedAt: new Date().toISOString()
   });
 
   return this.findOne(id);

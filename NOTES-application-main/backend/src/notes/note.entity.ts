@@ -1,7 +1,8 @@
 import {
-  Column,
   Entity,
+  Column,
   PrimaryGeneratedColumn,
+  CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm';
 
@@ -20,8 +21,11 @@ export class Note {
   @Column('text')
   body!: string;
 
+  @CreateDateColumn()
+  createdAt!: Date;
+
   @UpdateDateColumn()
-  date!: Date;
+  updatedAt!: Date;
 
   @Column({ default: false })
   pinned!: boolean;
