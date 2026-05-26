@@ -7,6 +7,23 @@ export interface User {
   name: string;
   email: string;
   password: string;
+  username?: string;
+  plan?: string;
+  joined?: string;
+  favoriteColor?: string;
+}
+
+export interface Settings {
+  id: string;
+  userId: string;
+  language?: string;
+  notifications?: boolean;
+  theme?: string;
+  autosave?: string;
+  privacy?: string;
+  reminderEmails?: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface LoginResponse {
@@ -31,6 +48,22 @@ export class BackendService {
 
   getUserByEmail(email: string) {
     return this.http.get<User>(`${this.apiUrl}/users/email/${encodeURIComponent(email)}`);
+  }
+
+  getUserById(id: string) {
+    return this.http.get<User>(`${this.apiUrl}/users/${id}`);
+  }
+
+  updateUser(id: string, user: Partial<Omit<User, 'id' | 'password'>>) {
+    return this.http.put<User>(`${this.apiUrl}/users/${id}`, user);
+  }
+
+  getSettingsByUserId(userId: string) {
+    return this.http.get<Settings>(`${this.apiUrl}/settings/user/${userId}`);
+  }
+
+  updateSettings(userId: string, settings: Partial<Omit<Settings, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>) {
+    return this.http.put<Settings>(`${this.apiUrl}/settings/user/${userId}`, settings);
   }
 
   getUsers() {

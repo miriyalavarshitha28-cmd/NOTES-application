@@ -12,31 +12,41 @@
   </div>
 
   <section class="page-card">
-    <div class="detail-grid">
+    <form (ngSubmit)="saveProfile()">
+      <div class="detail-grid">
       <div class="detail-item">
-        <span>Full Name</span>
-        <strong>{{ profile.fullName }}</strong>
+        <label for="fullName">Full Name</label>
+        <input id="fullName" name="fullName" [(ngModel)]="profile.fullName" />
       </div>
       <div class="detail-item">
-        <span>Email</span>
-        <strong>{{ profile.email }}</strong>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" [(ngModel)]="profile.email" />
       </div>
       <div class="detail-item">
-        <span>Username</span>
-        <strong>{{ profile.username }}</strong>
+        <label for="username">Username</label>
+        <input id="username" name="username" [(ngModel)]="profile.username" />
       </div>
       <div class="detail-item">
-        <span>Plan</span>
-        <strong>{{ profile.plan }}</strong>
+        <label for="plan">Plan</label>
+        <input id="plan" name="plan" [(ngModel)]="profile.plan" />
       </div>
       <div class="detail-item">
-        <span>Joined</span>
-        <strong>{{ profile.joined }}</strong>
+        <label for="joined">Joined</label>
+        <input id="joined" name="joined" [(ngModel)]="profile.joined" />
       </div>
-      <!-- <div class="detail-item">
-        <span>Favorite Color</span>
-        <strong>{{ profile.favoriteColor }}</strong>
-      </div> -->
-    </div>
+      <div class="detail-item">
+        <label for="favoriteColor">Favorite Color</label>
+        <input id="favoriteColor" name="favoriteColor" [(ngModel)]="profile.favoriteColor" />
+      </div>
+      </div>
+
+      <p class="form-message" *ngIf="message">{{ message }}</p>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="isSaving">
+          {{ isSaving ? 'Saving...' : 'Save Profile' }}
+        </button>
+      </div>
+    </form>
   </section>
 </div>

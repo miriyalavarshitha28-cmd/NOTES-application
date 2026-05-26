@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Put,
   Post
 } from '@nestjs/common';
 
@@ -78,6 +79,17 @@ export class UsersController {
     @Param('id') id: string
   ) {
     return this.usersService.findOne(id);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: any
+  ) {
+    return this.usersService.update(
+      id,
+      updateUserDto
+    );
   }
 
 }

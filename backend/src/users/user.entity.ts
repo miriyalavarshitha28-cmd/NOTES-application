@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -13,5 +13,17 @@ export class User {
 
   @Column()
   password!: string;
+
+  @Column({ nullable: true })
+  username?: string;
+
+  @Column({ nullable: true })
+  plan?: string;
+
+  @Column({ nullable: true })
+  joined?: string;
+
+  @Column({ nullable: true })
+  favoriteColor?: string;
 
 }

@@ -12,13 +12,15 @@ import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
 import * as bcrypt from 'bcrypt';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class UsersService {
 
   constructor(
     @InjectRepository(User)
-    private readonly usersRepository: Repository<User>
+    private readonly usersRepository: Repository<User>,
+    private readonly settingsService: SettingsService
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -33,7 +35,13 @@ export class UsersService {
       password: hashedPassword
     });
 
-    return this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
+
+    await this.settingsService.createForUser(
+      savedUser.id
+    );
+
+    return savedUser;
   }
 
   findAll() {
@@ -50,6 +58,29 @@ export class UsersService {
     return this.usersRepository.findOne({
       where: { email }
     });
+  }
+
+  async update(
+    id: string,
+    updateUserDto: Partial<Omit<User, 'id' | 'password'>>
+  ) {
+    const allowedUpdates = Object.fromEntries(
+      Object.entries({
+        name: updateUserDto.name,
+        email: updateUserDto.email,
+        username: updateUserDto.username,
+        plan: updateUserDto.plan,
+        joined: updateUserDto.joined,
+        favoriteColor: updateUserDto.favoriteColor
+      }).filter(([, value]) => value !== undefined)
+    );
+
+    await this.usersRepository.update(
+      id,
+      allowedUpdates
+    );
+
+    return this.findOne(id);
   }
 
   async validateUser(

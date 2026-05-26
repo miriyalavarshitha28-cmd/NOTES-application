@@ -17,22 +17,32 @@
 
   <section class="page-card">
 
-    <div class="detail-grid">
+    <form (ngSubmit)="saveSettings()">
+      <div class="detail-grid">
 
       <div class="detail-item">
-        <span>Language</span>
-        <strong>{{ settings.language }}</strong>
+        <label for="language">Language</label>
+        <select id="language" name="language" [(ngModel)]="settings.language">
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Spanish">Spanish</option>
+          <option value="French">French</option>
+        </select>
       </div>
 
       <div class="detail-item">
-        <span>Notifications</span>
-        <strong>
-          {{ settings.notifications ? 'Enabled' : 'Disabled' }}
-        </strong>
+        <label for="notifications">Notifications</label>
+        <select
+          id="notifications"
+          name="notifications"
+          [(ngModel)]="settings.notifications">
+          <option [ngValue]="true">Enabled</option>
+          <option [ngValue]="false">Disabled</option>
+        </select>
       </div>
 
       <div class="detail-item">
-        <span>Theme</span>
+        <label>Theme</label>
 
         <div class="theme-options">
 
@@ -61,36 +71,57 @@
       </div>
 
       <div class="detail-item">
-        <span>Autosave</span>
-        <strong>{{ settings.autosave }}</strong>
+        <label for="autosave">Autosave</label>
+        <select id="autosave" name="autosave" [(ngModel)]="settings.autosave">
+          <option value="On">On</option>
+          <option value="Off">Off</option>
+        </select>
       </div>
 
       <div class="detail-item">
-        <span>Privacy</span>
-        <strong>{{ settings.privacy }}</strong>
+        <label for="privacy">Privacy</label>
+        <select id="privacy" name="privacy" [(ngModel)]="settings.privacy">
+          <option value="Standard">Standard</option>
+          <option value="Private">Private</option>
+          <option value="Public">Public</option>
+        </select>
       </div>
 
       <div class="detail-item">
-        <span>Reminder Emails</span>
-        <strong>
-          {{ settings.reminderEmails ? 'On' : 'Off' }}
-        </strong>
+        <label for="reminderEmails">Reminder Emails</label>
+        <select
+          id="reminderEmails"
+          name="reminderEmails"
+          [(ngModel)]="settings.reminderEmails">
+          <option [ngValue]="true">On</option>
+          <option [ngValue]="false">Off</option>
+        </select>
       </div>
 
-    </div>
+      <div class="detail-item" *ngIf="createdAt">
+        <label>Created At</label>
+        <strong>{{ createdAt }}</strong>
+      </div>
 
-    <div style="margin-top: 30px; text-align:center;">
+      <div class="detail-item" *ngIf="updatedAt">
+        <label>Updated At</label>
+        <strong>{{ updatedAt }}</strong>
+      </div>
 
-      <button
-        type="button"
-        (click)="saveTheme()">
+      </div>
 
-        Save Theme
+      <p class="form-message" *ngIf="message">{{ message }}</p>
 
-      </button>
+      <div class="form-actions">
 
-    </div>
+        <button type="submit" [disabled]="isSaving">
 
+          {{ isSaving ? 'Saving...' : 'Save Settings' }}
+
+        </button>
+
+      </div>
+    </form>
   </section>
 
 </div>

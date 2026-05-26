@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/user.entity';
 import { NotesModule } from './notes/notes.module';
 import { Note } from './notes/note.entity';
+import { SettingsModule } from './settings/settings.module';
+import { Settings } from './settings/settings.entity';
 
 @Module({
   imports: [
@@ -21,12 +23,13 @@ import { Note } from './notes/note.entity';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Note],
+        entities: [User, Note, Settings],
         synchronize: true,
       }),
     }),
     UsersModule,
     NotesModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
