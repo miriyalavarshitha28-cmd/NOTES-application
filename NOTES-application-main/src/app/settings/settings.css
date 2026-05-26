@@ -78,3 +78,27 @@
     text-align: center;
   }
 }
+.nav-btn {
+  border: none;
+  border-radius: 16px;
+
+  padding: 14px 24px;
+
+  cursor: pointer;
+
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+
+  background: linear-gradient(
+    135deg,
+    #6366f1,
+    #d946ef
+  );
+
+  transition: 0.3s;
+}
+
+.nav-btn:hover {
+  transform: translateY(-3px);
+}
