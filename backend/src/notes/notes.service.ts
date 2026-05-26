@@ -23,11 +23,20 @@ export class NotesService {
   return this.notesRepository.save(note);
 }
 
-  findAllByUser(userId: string) {
+  findAllByUser(
+    userId: string,
+    pinned?: string
+  ) {
+    const pinnedFilter =
+      pinned === undefined
+        ? {}
+        : { pinned: pinned === 'true' };
+
     return this.notesRepository.find({
       where: {
         userId,
-        deletedAt: IsNull()
+        deletedAt: IsNull(),
+        ...pinnedFilter
       },
       order: {
         pinned: 'DESC',

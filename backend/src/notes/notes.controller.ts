@@ -13,8 +13,14 @@ export class NotesController {
   }
 
   @Get()
-  findAll(@Query('userId') userId: string) {
-    return this.notesService.findAllByUser(userId);
+  findAll(
+    @Query('userId') userId: string,
+    @Query('pinned') pinned?: string
+  ) {
+    return this.notesService.findAllByUser(
+      userId,
+      pinned
+    );
   }
 
   @Get(':id')

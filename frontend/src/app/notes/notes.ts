@@ -200,7 +200,7 @@ export class NotesComponent implements OnInit {
     this.newTitle = '';
     this.newBody = '';
 
-    this.backendService.getNotes(this.currentUserId).subscribe({
+    this.backendService.getNotes(this.currentUserId, true).subscribe({
       next: notes => {
         this.notes.set(notes.map(note => this.mapNote(note)));
       },

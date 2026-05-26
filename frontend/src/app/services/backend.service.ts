@@ -7,6 +7,8 @@ export interface User {
   name: string;
   email: string;
   password: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Settings {
@@ -75,8 +77,13 @@ export class BackendService {
   return this.http.post(`${this.apiUrl}/notes`, note);
 }
 
-  getNotes(userId: string) {
-    return this.http.get<any[]>(`${this.apiUrl}/notes?userId=${userId}`);
+  getNotes(userId: string, pinned?: boolean) {
+    const pinnedQuery =
+      pinned === undefined
+        ? ''
+        : `&pinned=${pinned}`;
+
+    return this.http.get<any[]>(`${this.apiUrl}/notes?userId=${userId}${pinnedQuery}`);
   }
 
  updateNote(id: string, dto: {

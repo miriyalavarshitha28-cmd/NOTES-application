@@ -7,6 +7,9 @@ import { BackendService, User } from '../services/backend.service';
 interface UserProfile {
   fullName: string;
   email: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 @Component({
@@ -19,7 +22,10 @@ interface UserProfile {
 export class ProfileComponent implements OnInit {
   profile: UserProfile = {
     fullName: '',
-    email: ''
+    email: '',
+    userId: '',
+    createdAt: '',
+    updatedAt: ''
   };
 
   userId = '';
@@ -106,7 +112,14 @@ export class ProfileComponent implements OnInit {
 
     this.profile = {
       fullName: name,
-      email
+      email,
+      userId: String(user?.id || this.userId || ''),
+      createdAt: user?.createdAt
+        ? new Date(user.createdAt).toLocaleString()
+        : '',
+      updatedAt: user?.updatedAt
+        ? new Date(user.updatedAt).toLocaleString()
+        : ''
     };
   }
 }
