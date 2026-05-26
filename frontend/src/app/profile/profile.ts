@@ -32,37 +32,52 @@ export class ProfileComponent {
   }
 
   private loadCurrentUser() {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    const stored = localStorage.getItem('currentUser');
-    if (!stored) {
-      return;
-    }
-
-    try {
-      const data = JSON.parse(stored);
-      const name = String(data?.name || 'Your Name');
-      const email = String(data?.email || 'you@example.com');
-      const username = data?.name
-        ? String(data.name).toLowerCase().replace(/\s+/g, '.')
-        : email.split('@')[0];
-
-      this.profile = {
-        fullName: name,
-        email,
-        username,
-        plan: 'Free',
-        joined: 'May 2026',
-        favoriteColor: 'Blue'
-      };
-    } catch {
-      const name = String(stored || 'Your Name');
-      const username = name.toLowerCase().replace(/\s+/g, '.');
-      this.profile.fullName = name;
-      this.profile.email = 'you@example.com';
-      this.profile.username = username;
-    }
+  if (typeof window === 'undefined') {
+    return;
   }
+
+  const stored = localStorage.getItem('currentUser');
+  if (!stored) {
+    return;
+  }
+
+  const joinedDate = new Date().toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric'
+  });
+
+  try {
+    const data = JSON.parse(stored);
+
+    const name = String(data?.name || 'Your Name');
+    const email = String(data?.email || 'you@example.com');
+
+    const username = data?.name
+      ? String(data.name).toLowerCase().replace(/\s+/g, '.')
+      : email.split('@')[0];
+
+    this.profile = {
+      fullName: name,
+      email,
+      username,
+      plan: 'Free',
+      joined: joinedDate,
+      favoriteColor: 'Blue'
+    };
+
+  } catch {
+
+    const name = String(stored || 'Your Name');
+    const username = name.toLowerCase().replace(/\s+/g, '.');
+
+    this.profile = {
+      fullName: name,
+      email: 'you@example.com',
+      username,
+      plan: 'Free',
+      joined: joinedDate,
+      favoriteColor: 'Blue'
+    };
+  }
+}
 }
