@@ -113,8 +113,6 @@ backend/src/
 
 │ └── notes.module.ts
 
-├── tasks/
-
 ├── app.module.ts
 
 └── main.ts
@@ -142,17 +140,6 @@ backend/src/
 | date   | String  |
 | pinned | Boolean |
 
-### Tasks Table
-
-| Column      | Type    |
-| ----------- | ------- |
-| id          | UUID    |
-| userId      | UUID    |
-| title       | String  |
-| description | String  |
-| completed   | Boolean |
-
----
 
 ## API Endpoints
 
